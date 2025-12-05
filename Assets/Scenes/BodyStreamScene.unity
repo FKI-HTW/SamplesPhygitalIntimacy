@@ -323,7 +323,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &778141066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,7 +407,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ed1141bca38f4144fac9112ea98e69ee, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.05359
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ed1141bca38f4144fac9112ea98e69ee, type: 3}
       propertyPath: m_LocalPosition.y
@@ -449,13 +449,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Aj
       objectReference: {fileID: 0}
+    - target: {fileID: 1600247537527589250, guid: ed1141bca38f4144fac9112ea98e69ee, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ed1141bca38f4144fac9112ea98e69ee, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1112933452}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ed1141bca38f4144fac9112ea98e69ee, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1112933450}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ed1141bca38f4144fac9112ea98e69ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1112933453}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ed1141bca38f4144fac9112ea98e69ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1112933454}
   m_SourcePrefab: {fileID: 100100000, guid: ed1141bca38f4144fac9112ea98e69ee, type: 3}
 --- !u!1 &1112933448 stripped
 GameObject:
@@ -547,6 +560,64 @@ MonoBehaviour:
     - {x: 0.50018454, y: 0.5001773, z: -0.4998221, w: 0.49981618}
     - {x: -0.0000000018626969, y: -0.000000061801344, z: -0.000000052147413, w: 1}
   isValidTpose: 1
+--- !u!114 &1112933452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112933448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
+  SortKey: 4059896955
+  ObjectInterest: 1
+  Flags: 131073
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1112933453}
+  - {fileID: 1112933454}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &1112933453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112933448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588b21511945a5e4b964c56bbe4711cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PhygitalIntimacy.Multiplayer.NetworkedActor
+  animator: {fileID: 1112933449}
+  lerpSpeed: 15
+  rokokoObjects:
+  - {fileID: 710884373}
+  rootFollowLerp: 10
+  heightOffset: 0
+  clampToGround: 0
+  groundY: 0
+  bones: []
+--- !u!114 &1112933454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112933448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkTransform
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1 &1500271574
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,13 +632,14 @@ GameObject:
   - component: {fileID: 1500271578}
   - component: {fileID: 1500271577}
   - component: {fileID: 1500271576}
+  - component: {fileID: 1500271581}
   m_Layer: 0
   m_Name: '[BuildingBlock] Network Manager'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1500271575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,6 +781,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1500271581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500271574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8edbe7108d8a43ab838cf8b8d9453df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Unity::Fusion.RunnerEnableVisibility
 --- !u!1 &1654297103
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,13 +879,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654297103}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.24775556, y: -0, z: -0, w: 0.9688226}
+  m_LocalPosition: {x: 0, y: 4.08, z: -5.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 28.689, y: 0, z: 0}
 --- !u!114 &1654297107
 MonoBehaviour:
   m_ObjectHideFlags: 0

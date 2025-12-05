@@ -4,22 +4,15 @@ using UnityEngine;
 
 namespace PhygitalIntimacy.Multiplayer
 {
-    public class NetworkedActor : NetworkBehaviour
+    public class NetworkedActor : NetworkBehaviour, IStateAuthorityChanged
     {
         [Header("Rig & Streaming")]
         [SerializeField] private Animator animator;
         [SerializeField] private float lerpSpeed = 15f;
         [SerializeField] private List<GameObject> rokokoObjects = new();
 
-        [SerializeField] private ObjectReferenceChannelSO performerObjectReference;
-
-        private bool lastVisibilityState;
-
         [Networked, Capacity(50)]
         private NetworkArray<Quaternion> NetworkedBoneRotations => default;
-
-        [Header("Performer Follow")]
-        public Transform performerToFollow;
 
         // Stable yaw computation & smoothing
         [SerializeField] private float rootFollowLerp = 10f; // smoothing for root position/rotation
@@ -43,25 +36,38 @@ namespace PhygitalIntimacy.Multiplayer
 
             InitializeBones();
 
-            if (HasStateAuthority)
-            {
-                foreach (GameObject item in rokokoObjects)
-                    item.SetActive(true);
+            ToggleRokokoObjects(HasStateAuthority);
 
-                performerObjectReference.OnObjectProvided -= OnPerformerProvided;
-                performerObjectReference.OnObjectProvided += OnPerformerProvided;
+            if (Runner.IsSharedModeMasterClient)
+            {
+                Object.RequestStateAuthority();
             }
         }
 
-        private void OnDestroy()
+        private void OnValidate()
         {
-            if (HasStateAuthority && performerObjectReference != null)
-                performerObjectReference.OnObjectProvided -= OnPerformerProvided;
+            if (animator == null)
+                animator = GetComponent<Animator>();
+
+            //ToggleRokokoObjects(false);
         }
 
-        private void OnPerformerProvided(GameObject performer)
+        private void ToggleRokokoObjects(bool activate)
         {
-            performerToFollow = performer != null ? performer.transform : null;
+            foreach (GameObject item in rokokoObjects) item.SetActive(activate);
+        }
+
+        public void StateAuthorityChanged()
+        {
+            if (HasStateAuthority)
+            {
+                Debug.Log("Authority granted! Activating Rokoko objects.");
+                ToggleRokokoObjects(true);
+            }
+            else
+            {
+                ToggleRokokoObjects(false);
+            }
         }
 
         private void InitializeBones()
@@ -88,6 +94,11 @@ namespace PhygitalIntimacy.Multiplayer
 
         public override void FixedUpdateNetwork()
         {
+            if (Runner.IsSharedModeMasterClient && !Object.HasStateAuthority)
+            {
+                Object.RequestStateAuthority();
+            }
+
             // Only state authority writes networked bone rotations and root transform
             if (!HasStateAuthority)
                 return;
@@ -101,25 +112,6 @@ namespace PhygitalIntimacy.Multiplayer
                 Quaternion newRotation = bones[i].rotation;
                 if (Quaternion.Angle(NetworkedBoneRotations.Get(i), newRotation) > 0.01f)
                     NetworkedBoneRotations.Set(i, newRotation);
-            }
-
-            // Follow performer root with stable yaw-only rotation
-            if (performerToFollow != null)
-            {
-                Vector3 targetPos = performerToFollow.position;
-
-                // Optional adjustments
-                targetPos.y += heightOffset;
-                if (clampToGround)
-                    targetPos.y = Mathf.Max(targetPos.y, groundY);
-
-                Quaternion yawOnly = ComputeYawOnly(performerToFollow);
-
-                Transform root = transform.root;
-
-                // Smooth position & rotation to reduce jitter across network ticks
-                root.position = Vector3.Lerp(root.position, targetPos, Time.deltaTime * rootFollowLerp);
-                root.rotation = Quaternion.Slerp(root.rotation, yawOnly, Time.deltaTime * rootFollowLerp);
             }
         }
 
@@ -172,5 +164,7 @@ namespace PhygitalIntimacy.Multiplayer
 
             return Quaternion.LookRotation(planarFwd, Vector3.up);
         }
+
+
     }
 }
