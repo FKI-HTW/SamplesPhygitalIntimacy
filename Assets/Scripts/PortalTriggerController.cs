@@ -45,9 +45,9 @@ public class PortalTriggerController : MonoBehaviour
     [Tooltip("Time in seconds to wait between changing the layer of each child object.")]
     [Range(0f, 0.5f)]
     public float transitionDelay = 0.05f;
-
     [Tooltip("If true, child objects will change layers in random order. If false, they change top-down.")]
     public bool randomizeOrder = false;
+    public bool showDelayedVR = false;
 
     [Header("Response")]
     [Tooltip("Actions to execute when the trigger is activated.")]
@@ -101,10 +101,13 @@ public class PortalTriggerController : MonoBehaviour
             onTriggerEnterToVR.Invoke();
         }
 
-        //if (activeCoroutine != null) StopCoroutine(activeCoroutine);
-        //activeCoroutine = StartCoroutine(ChangeLayerRoutine(layerChangeTarget, targetLayerIndex));
-
-        ChangeLayerRecursively(layerChangeTarget, targetLayerIndex);
+        if (showDelayedVR)
+        {
+            if (activeCoroutine != null) StopCoroutine(activeCoroutine);
+            activeCoroutine = StartCoroutine(ChangeLayerRoutine(layerChangeTarget, targetLayerIndex));
+        }
+        else
+            ChangeLayerRecursively(layerChangeTarget, targetLayerIndex);
 
     }
 
