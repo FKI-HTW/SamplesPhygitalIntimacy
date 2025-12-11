@@ -14,12 +14,6 @@ namespace PhygitalIntimacy.Multiplayer
         [Networked, Capacity(50)]
         private NetworkArray<Quaternion> NetworkedBoneRotations => default;
 
-        // Stable yaw computation & smoothing
-        [SerializeField] private float rootFollowLerp = 10f; // smoothing for root position/rotation
-        [SerializeField] private float heightOffset = 0f;    // optional vertical offset, e.g., hips-to-root
-        [SerializeField] private bool clampToGround = false; // lock to a minimum ground Y
-        [SerializeField] private float groundY = 0f;         // ground plane height
-
         private Vector3 _lastPlanarHeading = Vector3.forward;
 
         [Header("Bones")]
