@@ -16,6 +16,8 @@ Shader "PortalStencil"
 
         Pass
         {
+            Cull Off 
+
             Blend Zero One
             ZWrite Off
 
